@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxora - Premium Shopping Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 40px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-section:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .profile-avatar {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .profile-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .profile-info p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .profile-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            height: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(102, 126, 234, 0.2);
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+        }
+        .cart-count {
+    background: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    margin-left: auto;
+    min-width: 18px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Add to Cart button for products */
+.add-to-cart-btn {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.add-to-cart-btn:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
+/* Enhanced product card with add to cart */
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.view-product-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 8px 12px;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.view-product-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+}
+
+/* Cart notification */
+.cart-notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+
+.cart-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+        .categories-section {
+            margin-top: 30px;
+        }
+
+        .category-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .category-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .subcategories {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #667eea;
+            color: #fff;
+            border-color: #667eea;
+        }
+
+    .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.product-card, .product {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 400px; /* Fixed height for consistency */
+}
+
+.product-card:hover, .product:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Uniform Image Sizing */
+.product-image, .product img {
+    width: 100%;
+    height: 250px; /* Fixed height */
+    object-fit: cover; /* Ensures proper aspect ratio */
+    object-position: center; /* Centers the image */
+    transition: transform 0.3s ease;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    display: block;
+}
+
+.product-card:hover .product-image,
+.product:hover img {
+    transform: scale(1.05);
+}
+
+/* Product Info Section */
+.product-info, .product {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.product h3, .product-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 10px 0;
+    color: #fff;
+    text-align: center;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.product p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #4CAF50;
+    text-align: center;
+    margin-top: auto;
+}
+@media (max-width: 1200px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .product-card, .product, .enhanced-product-card {
+        height: 380px;
+    }
+    
+    .product-image, .product img {
+        height: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+    }
+    
+    .product-card, .product, .enhanced-product-card {
+        height: 350px;
+    }
+    
+    .product-image, .product img {
+        height: 200px;
+    }
+}
+
+/* Loading placeholder for images */
+.product-image.loading, .product img.loading {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+
+/* Enhanced Product Card Structure */
+.enhanced-product-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+}
+
+.enhanced-product-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.enhanced-product-card .product-image-container {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+}
+
+.enhanced-product-card .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+}
+
+.enhanced-product-card:hover .product-image {
+    transform: scale(1.08);
+}
+
+.enhanced-product-card .product-details {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.enhanced-product-card .product-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-height: 2.6rem;
+}
+
+.enhanced-product-card .product-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #4CAF50;
+    text-align: center;
+    margin-top: auto;
+}
+
+.enhanced-product-card .product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(102, 126, 234, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.enhanced-product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.enhanced-product-card .view-product-btn {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.enhanced-product-card .view-product-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */    /* AI Assistant */
+        .ai-assistant {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    width: 320px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 25px;
+    height: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1500;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.ai-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.ai-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.ai-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.ai-chat {
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.chat-message {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    max-width: 90%;
+}
+
+.ai-message {
+    background: rgba(102, 126, 234, 0.2);
+    margin-right: auto;
+}
+
+.user-message {
+    background: rgba(255, 255, 255, 0.1);
+    margin-left: auto;
+    text-align: right;
+}
+
+.ai-input-container {
+    display: flex;
+    gap: 10px;
+}
+
+.ai-input {
+    flex: 1;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.ai-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ai-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.ai-send {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ai-send:hover {
+    transform: scale(1.05);
+}
+
+/* Updated Main Container for AI positioning */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-right: 360px; /* Space for fixed AI assistant */
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+    .main-container {
+        padding-right: 340px;
+    }
+    
+    .ai-assistant {
+        width: 300px;
+        right: 15px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        padding-right: 20px;
+    }
+    
+    .ai-assistant {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 100%;
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-assistant {
+        position: relative;
+        margin-top: 20px;
+        padding: 20px;
+    }
+}
+        /* Profile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        .profile-section {
+            margin-bottom: 30px;
+        }
+
+        .profile-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .profile-label {
+            font-size: 0.9rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .profile-value {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .order-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-delivered {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-processing {
+            background: #FF9800;
+            color: white;
+        }
+
+        .status-shipped {
+            background: #2196F3;
+            color: white;
+        }
+
+        .order-details {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Design */
+    </style>
+</head>
+<body>
+     
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-container">
+            <div class="logo">LUXORA</div>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search for products, brands, categories..." id="searchInput">
+                <button class="search-btn" onclick="searchProducts()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="header-actions">
+                <div class="profile-section" onclick="openProfile()">
+                    <div class="profile-avatar">AJ</div>
+                    <div class="profile-info">
+                        <h4>Alexandra Johnson</h4>
+                        <p>Gold Member</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3 class="sidebar-title">Navigation</h3>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <div class="nav-link active" onclick="showSection('home')">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('orders')">
+                        <i class="fas fa-shopping-bag"></i>
+                        My Orders
+                    </div>
+                </li>
+                <li class="nav-item">
+    <div class="nav-link" onclick="showSection('cart')">
+        <i class="fas fa-shopping-cart"></i>
+        Cart
+        <span class="cart-count" id="cartCount"></span>
+    </div>
+</li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('brands')">
+                        <i class="fas fa-tags"></i>
+                        Brands
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('wishlist')">
+                        <i class="fas fa-heart"></i>
+                        Wishlist
+                    </div>
+                </li>
+            </ul>
+            <div class="categories-section">
+                <h3 class="sidebar-title">Categories</h3>
+                
+                <div class="category-item" onclick="loadCategory('men')">
+                    <div class="category-title">
+                        <i class="fas fa-male"></i> Men's Fashion
+                    </div>
+                    <div class="subcategories">Shirts, Pants, Shoes, Accessories</div>
+                </div>
+                
+                <div class="category-item" onclick="loadCategory('women')">
+                    <div class="category-title">
+                        <i class="fas fa-female"></i> Women's Fashion
+                    </div>
+                    <div class="subcategories">Dresses, Tops, Shoes, Jewelry</div>
+                </div>
+                
+                <div class="category-item" onclick="loadCategory('children')">
+                    <div class="category-title">
+                        <i class="fas fa-child"></i> Children
+                    </div>
+                    <div class="subcategories">Boys, Girls, Babies, Toys</div>
+                </div>
+                
+                <div class="category-item" onclick="loadCategory('electronics')">
+                    <div class="category-title">
+                        <i class="fas fa-laptop"></i> Electronics
+                    </div>
+                    <div class="subcategories">Phones, Laptops, Gaming</div>
+                </div>
+                
+                <div class="category-item" onclick="loadCategory('home')">
+                    <div class="category-title">
+                        <i class="fas fa-home"></i> Home & Living
+                    </div>
+                    <div class="subcategories">Furniture, Decor, Kitchen</div>
+                </div>
+            </div>
+        </div>
+<script>
+function loadCategory(category) {
+    switch(category) {
+        case 'men':
+            window.location.href = 'mensfashion.html';
+            break;
+        case 'women':
+            window.location.href = 'womensfashion.html';
+            break;
+        case 'children':
+            // You didn't specify a children page, so keeping original logic
+            window.location.href = 'children.html';
+            break;
+        case 'electronics':
+            window.location.href = 'electronics.html';
+            break;
+        case 'home':
+            window.location.href = 'furnitures.html';
+            break;
+        default:
+            console.log('Unknown category:', category);
+    }
+}
+</script>
+
+            <div class="products-grid" id="productsGrid">
+<!-- CASUAL T-SHIRT -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="casual t-shirt.jpeg" alt="Casual T-Shirt" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=CASUAL+T-SHIRT'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='casualt-shirtproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">CASUAL T-SHIRT</h3>
+        <p class="product-price">₹999</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P001')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- DENIM JACKET -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="denim jacket.jpeg" alt="Denim Jacket" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=DENIM+JACKET'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='denimjacketproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">DENIM JACKET</h3>
+        <p class="product-price">₹1,299</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P002')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- RUNNING SNEAKERS -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="running sneakers.jpeg" alt="Running Sneakers" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=RUNNING+SNEAKERS'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='running sneakers product.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">RUNNING SNEAKERS</h3>
+        <p class="product-price">₹1,499</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect('P003')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- LEATHER BELT -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="leather belt.jpeg" alt="Leather Belt" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=LEATHER+BELT'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='leatherbeltproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">LEATHER BELT</h3>
+        <p class="product-price">₹499</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P004')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- FLIP FLOPS -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="flip flops.jpeg" alt="Flip Flops" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=FLIP+FLOPS'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='flipflopproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">FLIP FLOPS</h3>
+        <p class="product-price">₹2,299</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P005')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- SPORTS WATCH -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="sports watch.jpeg" alt="Sports Watch" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=SPORTS+WATCH'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='sportswatchproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">SPORTS WATCH</h3>
+        <p class="product-price">₹1,599</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P006')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- SPORTS CAP -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="sports cap.jpeg" alt="Sports Cap" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=SPORTS+CAP'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='sportscapproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">SPORTS CAP</h3>
+        <p class="product-price">₹399</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P007')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- WINTER JACKET -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="winter jacket.jpeg" alt="Winter Jacket" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=WINTER+JACKET'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='winterjacketproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">WINTER JACKET</h3>
+        <p class="product-price">₹1,399</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P008')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- PRINTED KURTA -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="kurta set.jpeg" alt="Printed Kurta" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=PRINTED+KURTA'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='printedkurta.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">PRINTED KURTA</h3>
+        <p class="product-price">₹999</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P009')">Add to Cart</button>
+    </div>
+</div>
+
+<!-- LOAFERS -->
+<div class="enhanced-product-card">
+    <div class="product-image-container">
+        <img src="loafers.jpeg" alt="Loafers" class="product-image"
+             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=LOAFERS'">
+        <div class="product-overlay">
+            <button class="view-product-btn" onclick="window.location.href='loafersproduct.html'">View Product</button>
+        </div>
+    </div>
+    <div class="product-details">
+        <h3 class="product-title">LOAFERS</h3>
+        <p class="product-price">₹599</p>
+        <button class="add-to-cart-btn" onclick="addToCartAndRedirect(event,'P010')">Add to Cart</button>
+    </div>
+</div>
+
+
+
+<script>
+// Enhanced image loading and interaction
+document.addEventListener('DOMContentLoaded', function() {
+    const productImages = document.querySelectorAll('.product-image');
+    
+    // Add loading state to images
+    productImages.forEach(function(img) {
+        img.addEventListener('load', function() {
+            this.classList.remove('loading');
+        });
+        
+        img.addEventListener('error', function() {
+            this.classList.remove('loading');
+        });
+        
+        // Add click handler for image enlargement
+        img.addEventListener('click', function(e) {
+            e.stopPropagation();
+            openImageModal(this.src, this.alt);
+        });
+    });
+    
+    // Enhanced product card interactions
+    const productCards = document.querySelectorAll('.enhanced-product-card');
+    productCards.forEach(function(card) {
+        const viewBtn = card.querySelector('.view-product-btn');
+        if (viewBtn) {
+            viewBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productTitle = card.querySelector('.product-title').textContent;
+                showProductDetails(productTitle);
+            });
+        }
+    });
+});
+
+function openImageModal(imageSrc, imageAlt) {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(10px);
+        z-index: 3000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    `;
+    
+    const img = document.createElement('img');
+    img.src = imageSrc;
+    img.alt = imageAlt;
+    img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    `;
+    
+    modal.appendChild(img);
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+}
+
+function showProductDetails(productName) {
+    // Placeholder for product details functionality
+    alert(`Viewing details for: ${productName}`);
+}
+</script>
+
+        <!-- AI Assistant -->
+        <div class="ai-assistant">
+            <div class="ai-header">
+                <div class="ai-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="ai-title">AI Shopping Assistant</div>
+            </div>
+            
+            <div class="ai-chat" id="aiChat">
+                <div class="chat-message ai-message">
+                    Hello! I'm your personal shopping assistant. Ask me about products, sizes, recommendations, or anything else!
+                </div>
+            </div>
+            
+            <div class="ai-input-container">
+                <input type="text" class="ai-input" id="aiInput" placeholder="Ask me anything...">
+                <button class="ai-send" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+   <div id="profileModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">My Profile</h2>
+            <button class="close-btn" onclick="closeProfile()">&times;</button>
+        </div>
+        
+        <!-- User Profile Information -->
+        <div class="profile-section">
+            <div class="profile-info">
+                <div class="profile-avatar-large">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-details">
+                    <div class="profile-field">
+                        <span class="profile-label">Full Name</span>
+                        <span class="profile-value">Alexandra Johnson</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="profile-label">Email</span>
+                        <span class="profile-value">alex.johnson@email.com</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="profile-label">Phone</span>
+                        <span class="profile-value">+1 (555) 123-4567</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="profile-label">Member Since</span>
+                        <span class="profile-value">January 2023</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="profile-label">Address</span>
+                        <span class="profile-value">123 Fashion Avenue, NY 10001</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="profile-label">VIP Status</span>
+                        <span class="profile-value">Gold Member</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">47</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$12,450</div>
+                    <div class="stat-label">Total Spent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Wishlist Items</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+<!-- Removed duplicate and conflicting script block. The image click logic is already handled above with modal enlargement. -->
+<script src="cart.js"></script>
+
+

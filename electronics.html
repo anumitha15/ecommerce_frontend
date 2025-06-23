@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronics & gadgets - Luxora</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #fff;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 40px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Main Container - Updated to single column */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Content Area */
+        .content-area {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active, .view-btn:hover {
+            background: #667eea;
+            color: #fff;
+            border-color: #667eea;
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sort-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+        }
+
+        .sort-select {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .results-count {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .enhanced-product-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .enhanced-product-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .enhanced-product-card .product-image-container {
+            position: relative;
+            height: 260px;
+            overflow: hidden;
+        }
+
+        .enhanced-product-card .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.4s ease;
+        }
+
+        .enhanced-product-card:hover .product-image {
+            transform: scale(1.08);
+        }
+
+        .enhanced-product-card .product-details {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .enhanced-product-card .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            min-height: 2.6rem;
+        }
+
+        .enhanced-product-card .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #4CAF50;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .enhanced-product-card .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(102, 126, 234, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .enhanced-product-card:hover .product-overlay {
+            opacity: 1;
+        }
+
+        .enhanced-product-card .view-product-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .enhanced-product-card .view-product-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .add-to-cart-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            width: 100%;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .add-to-cart-btn:hover {
+            background: linear-gradient(45deg, #45a049, #4CAF50);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Cart notification */
+        .cart-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .cart-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-container {
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .main-container {
+                padding: 15px;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .enhanced-product-card {
+                height: 380px;
+            }
+
+            .enhanced-product-card .product-image-container {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 15px;
+            }
+            
+            .enhanced-product-card {
+                height: 350px;
+            }
+            
+            .enhanced-product-card .product-image-container {
+                height: 200px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-container">
+            <div class="logo" onclick="goHome()">LUXORA</div>
+            
+            <div class="breadcrumb">
+                <a href="#" onclick="goHome()">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Men's Fashion</span>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search men's fashion..." id="searchInput">
+                <button class="search-btn" onclick="searchProducts()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="content-header">
+                <div>
+                    <h1 class="page-title">Electronics & Gadgets</h1>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="changeView('grid')">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" onclick="changeView('list')">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sort-controls">
+                <span class="sort-label">Sort by:</span>
+                <select class="sort-select" id="sortSelect" onchange="sortProducts()">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                    <option value="rating">Customer Rating</option>
+                    <option value="popularity">Most Popular</option>
+                </select>
+                <span class="results-count" id="resultsCount">Showing 1-10 of 10 results</span>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- CASUAL T-SHIRT -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="vivo.jpeg" alt="Casual T-Shirt" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=CASUAL+T-SHIRT'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='casualt-shirtproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">VIVO V25</h3>
+                        <p class="product-price">₹30,758</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0031'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- DENIM JACKET -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="asus vivobook.jpeg" alt="black car" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=DENIM+JACKET'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='denimjacketproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">ASUS VIVOBOOK</h3>
+                        <p class="product-price">₹50,000</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0032'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- RUNNING SNEAKERS -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="HP.jpeg" alt="Running Sneakers" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=RUNNING+SNEAKERS'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='running sneakers product.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">HP</h3>
+                        <p class="product-price">₹60,000</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0033'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- LEATHER BELT -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="dell.jpeg" alt="Leather Belt" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=LEATHER+BELT'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='leatherbeltproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">DELL LAPTOP</h3>
+                        <p class="product-price">₹79,999</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0034'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- FLIP FLOPS -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="macbook.jpeg" alt="Flip Flops" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=FLIP+FLOPS'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='flipflopproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">MACBOOK LAPTOP</h3>
+                        <p class="product-price">₹89,000</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0035'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- SPORTS WATCH -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="boatairpods.jpeg" alt="Sports Watch" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=SPORTS+WATCH'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='sportswatchproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">BOAT AIRPODS</h3>
+                        <p class="product-price">₹1,299</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0036'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- SPORTS CAP -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="truke.jpeg" alt="Sports Cap" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=SPORTS+CAP'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='sportscapproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">TRUKE BUDS Q1 LITE</h3>
+                        <p class="product-price">₹699</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0037'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- WINTER JACKET -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="samsung.jpeg" alt="Winter Jacket" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=WINTER+JACKET'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='winterjacketproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">SAMSUNG MOBILE</h3>
+                        <p class="product-price">₹40,000</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0038'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- PRINTED KURTA -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="appleairpods.jpeg" alt="Police car" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=PRINTED+KURTA'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='printedkurta.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">APPLE AIRPODS</h3>
+                        <p class="product-price">₹15000</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0039'">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- LOAFERS -->
+                <div class="enhanced-product-card">
+                    <div class="product-image-container">
+                        <img src="huawei.jpeg" alt="Loafers" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/280x260/667eea/ffffff?text=LOAFERS'">
+                        <div class="product-overlay">
+                            <button class="view-product-btn" onclick="window.location.href='loafersproduct.html'">View Product</button>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">HUAWEI 26 PRO</h3>
+                        <p class="product-price">₹35,000</p>
+                        <button class="add-to-cart-btn" onclick="window.location.href='addtocart.html?id=P0040'">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchInput').value;
+            console.log('Searching for:', searchTerm);
+            // Implement search functionality
+        }
+
+        function changeView(viewType) {
+            const buttons = document.querySelectorAll('.view-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.view-btn').classList.add('active');
+            
+            // Implement view change logic
+            console.log('Changed view to:', viewType);
+        }
+
+        function sortProducts() {
+            const sortValue = document.getElementById('sortSelect').value;
+            console.log('Sorting by:', sortValue);
+            // Implement sorting functionality
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+    </script>
+</body>
+</html>

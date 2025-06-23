@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxora - Shopping Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #1a1d29;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #1a1d29;
+            padding: 20px 0;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .cart-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cart-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cart-subtitle {
+            color: #a0aec0;
+            font-size: 1.1rem;
+        }
+
+        .cart-items-section {
+            background: #2d3748;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #4a5568;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+        }
+
+        .cart-item {
+            background: #1a1d29;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #4a5568;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .item-content {
+            display: grid;
+            grid-template-columns: 120px 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .item-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #4a5568;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .item-description {
+            color: #a0aec0;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .item-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #48bb78;
+        }
+
+        .coupon-tag {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .item-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            background: #4a5568;
+            border-radius: 25px;
+            padding: 5px;
+            border: 1px solid #667eea;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .quantity-btn:hover {
+            background: #5a67d8;
+            transform: scale(1.1);
+        }
+
+        .quantity-display {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .remove-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .remove-btn:hover {
+            background: #c53030;
+            transform: scale(1.05);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0aec0;
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #4a5568;
+        }
+
+        .empty-cart h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .cart-count {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .continue-shopping {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .continue-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .item-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .cart-items-section {
+                margin: 0 10px;
+            }
+        }
+        /* Add this to your <style> section */
+.buy-now-btn {
+    background: #38a169;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+.buy-now-btn:hover {
+    background: #2f855a;
+    transform: scale(1.05);
+}
+         .buy-now-btn i{
+            margin-right : 5px;
+         }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">LUXORA</div>
+            <div class="user-info">
+                <div class="user-avatar">AJ</div>
+                <div>
+                    <div style="font-weight: 600;">Alexandra Johnson</div>
+                    <div style="color: #a0aec0; font-size: 0.9rem;">Gold Member</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Cart Header -->
+        <div class="cart-header">
+            <h1 class="cart-title">Shopping Cart</h1>
+            <p class="cart-subtitle">Review and manage your selected items</p>
+        </div>
+
+        <!-- Cart Items Section -->
+        <div class="cart-items-section">
+            <h2 class="section-title">
+                <i class="fas fa-shopping-bag"></i>
+                Your Items
+                <span class="cart-count" id="cart-count">0 items</span>
+            </h2>
+            
+            <div id="cart-items">
+                <!-- Cart items will be populated here -->
+            </div>
+            
+            <div id="empty-cart" class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h3>Your cart is empty</h3>
+                <p>Add some amazing products to get started!</p>
+            </div>
+        </div>
+
+        <!-- Continue Shopping Button -->
+        <div class="continue-shopping">
+            <button class="continue-btn" onclick="continueShopping()">
+                <i class="fas fa-arrow-left"></i>
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+<script>
+    function loadCartItems() {
+    try {
+        const cartData = JSON.parse(localStorage.getItem('luxora_cart')) || { items: [] };
+        const cartItems = cartData.items || [];
+        
+        const cartItemsContainer = document.getElementById('cart-items');
+        const emptyCart = document.getElementById('empty-cart');
+        const cartCount = document.getElementById('cart-count');
+
+        // Clear UI before re-rendering
+        cartItemsContainer.innerHTML = '';
+
+        if (cartItems.length === 0) {
+            emptyCart.style.display = 'block';
+            cartCount.textContent = '0 items';
+            return;
+        }
+
+        emptyCart.style.display = 'none';
+
+        const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+
+        cartItems.forEach(item => {
+            const cartItemHTML = `
+                <div class="cart-item" data-id="${item.id}">
+                    <div class="item-content">
+                        <img src="${item.imageUrl || item.ImageURL || 'https://via.placeholder.com/120'}" 
+                            alt="${item.name}" class="item-image"
+                            onerror="this.src='https://via.placeholder.com/120'">
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-description">${item.description}</div>
+                            <div class="item-price">₹${item.price?.toFixed(2) || '0.00'}</div>
+                            ${item.couponCode ? `<div class="coupon-tag"><i class="fas fa-tag"></i> ${item.couponCode}</div>` : ''}
+                        </div>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="quantity-display">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <button class="remove-btn" onclick="removeFromCart('${item.id}')">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                            <button class="buy-now-btn" onclick="buyNow('${item.id}')">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            cartItemsContainer.innerHTML += cartItemHTML;
+        });
+    } catch (error) {
+        console.error('Error loading cart items:', error);
+    }
+}
+
+
+    function updateQuantity(productId, change) {
+        try {
+            const cartData = JSON.parse(localStorage.getItem('luxora_cart')) || { items: [] };
+            const cartItems = cartData.items || [];
+            
+            const item = cartItems.find(item => String(item.id) === String(productId));
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                    return;
+                }
+                
+                cartData.lastUpdated = new Date().toISOString();
+                cartData.totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                localStorage.setItem('luxora_cart', JSON.stringify(cartData));
+                loadCartItems();
+            }
+        } catch (error) {
+            console.error('Error updating quantity:', error);
+        }
+    }
+
+   function removeFromCart(productId) {
+    try {
+        let cartData = JSON.parse(localStorage.getItem('luxora_cart')) || { items: [] };
+
+        console.log("Removing product ID:", productId); // Debugging step
+        console.log("Cart before removal:", cartData.items); 
+
+        // Filter out the item from the cart
+        cartData.items = cartData.items.filter(item => String(item.id) !== String(productId));
+
+        // Update localStorage
+        localStorage.setItem('luxora_cart', JSON.stringify(cartData));
+
+        console.log("Cart after removal:", cartData.items); // Check if item was removed
+        
+        // Reload the updated cart UI
+        loadCartItems();
+    } catch (error) {
+        console.error('Error removing from cart:', error);
+    }
+}
+
+   function buyNow(productId) {
+    const cartData = JSON.parse(localStorage.getItem('luxora_cart')) || { items: [] };
+    const item = cartData.items.find(item => String(item.id) === String(productId));
+
+    if (item) {
+        // Save item temporarily for checkout
+        sessionStorage.setItem('luxora_buy_now_item', JSON.stringify(item));
+
+        // Redirect to checkout page
+        alert(`Proceeding to buy now: ${item.name}`);
+        window.location.href = 'order.html';
+    } else {
+        alert('Item not found in cart.');
+    }
+}
+
+
+
+
+        function continueShopping() {
+            // Redirect to products page (you can change this URL)
+            alert('Redirecting to products page...');
+            window.location.href = 'order.html';
+        }
+
+        // Sample function to add items for testing
+        
+
+         
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartItems();
+            
+            // Add sample items if cart is empty (for testing)
+            const cartData = JSON.parse(localStorage.getItem('luxora_cart')) || { items: [] };
+            if (cartData.items.length === 0) {
+                // Uncomment the line below to add sample items for testing
+                addSampleItems();
+            }
+        });
+    </script>
+</body>
+</html>

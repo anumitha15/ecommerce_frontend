@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxora - Order Summary</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #1a1d29;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #1a1d29;
+            padding: 20px 0;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #a0aec0;
+            font-size: 1.1rem;
+        }
+
+        .order-summary-card {
+            background: #2d3748;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #4a5568;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+        }
+
+        .order-items {
+            margin-bottom: 30px;
+        }
+
+        .order-item {
+            background: #1a1d29;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #4a5568;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: #a0aec0;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .item-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #48bb78;
+        }
+
+        .item-quantity {
+            background: #4a5568;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .pricing-breakdown {
+            background: #1a1d29;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #4a5568;
+        }
+
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-size: 1.1rem;
+        }
+
+        .pricing-row:not(:last-child) {
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .pricing-row.total {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #48bb78;
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 2px solid #667eea;
+        }
+
+        .discount-row {
+            color: #48bb78;
+        }
+
+        .coupon-info {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .order-details {
+            background: #2d3748;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #4a5568;
+            margin-bottom: 30px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #a0aec0;
+        }
+
+        .detail-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .order-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">LUXORA</div>
+            <div class="user-info">
+                <div class="user-avatar">AJ</div>
+                <div>
+                    <div style="font-weight: 600;">Alexandra Johnson</div>
+                    <div style="color: #a0aec0; font-size: 0.9rem;">Gold Member</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Order Summary</h1>
+            <p class="page-subtitle">Review your order details before proceeding</p>
+        </div>
+
+        <!-- Order Details -->
+        <div class="order-details">
+            <h2 class="section-title">
+                <i class="fas fa-info-circle"></i>
+                Order Information
+            </h2>
+            <div class="detail-row">
+                <span class="detail-label">Order ID:</span>
+                <span class="detail-value" id="order-id">#LUX-2024-001</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Order Date:</span>
+                <span class="detail-value" id="order-date">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="status-badge">Pending Payment</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Customer:</span>
+                <span class="detail-value">Alexandra Johnson</span>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary-card">
+            <h2 class="section-title">
+                <i class="fas fa-shopping-bag"></i>
+                Items in Your Order
+                <span id="item-count" style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; margin-left: auto;">0 items</span>
+            </h2>
+            
+            <div class="order-items" id="order-items">
+                <!-- Order items will be populated here -->
+            </div>
+
+            <div class="pricing-breakdown">
+                <div class="pricing-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₹0.00</span>
+                </div>
+                <div class="pricing-row discount-row" id="discount-row" style="display: none;">
+                    <span>Discount:</span>
+                    <span id="discount">-₹0.00</span>
+                </div>
+                <div class="pricing-row">
+                    <span>Tax (18%):</span>
+                    <span id="tax">₹0.00</span>
+                </div>
+                <div class="pricing-row">
+                    <span>Shipping:</span>
+                    <span id="shipping">FREE</span>
+                </div>
+                <div class="pricing-row total">
+                    <span>Total Amount:</span>
+                    <span id="total">₹0.00</span>
+                </div>
+            </div>
+
+            <div id="coupon-info" class="coupon-info" style="display: none;">
+                <i class="fas fa-tag"></i>
+                <span id="coupon-text">Coupon applied successfully!</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="proceedToPayment()">
+                <i class="fas fa-credit-card"></i>
+                Proceed to Payment
+            </button>
+            <button class="btn btn-secondary" onclick="goBackToCart()">
+                <i class="fas fa-arrow-left"></i>
+                Back to Cart
+            </button>
+        </div>
+    </div>
+<script>
+// Load Buy Now order summary
+function loadOrderSummary() {
+    try {
+        // Fetch "Buy Now" product details
+        const buyNowItem = JSON.parse(sessionStorage.getItem('luxora_buy_now_item'));
+
+        if (!buyNowItem) {
+            alert('No item selected for checkout. Redirecting back to product page...');
+            window.location.href = 'index.html'; // Redirect to home or product page
+            return;
+        }
+
+        // Update order details
+        updateOrderDetails();
+
+        // Render only the Buy Now item
+        renderOrderItem(buyNowItem);
+
+        // Update pricing for a single product
+        updatePricing(buyNowItem);
+    } catch (error) {
+        console.error('Error loading order summary:', error);
+        alert('Error loading order data. Please try again.');
+    }
+}
+
+// Update order date display
+function updateOrderDetails() {
+    const orderDate = new Date();
+    document.getElementById('order-date').textContent = orderDate.toLocaleDateString('en-IN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// Render a single product for checkout
+function renderOrderItem(item) {
+    const orderItemsContainer = document.getElementById('order-items');
+
+    orderItemsContainer.innerHTML = `
+        <div class="order-item">
+            <img src="${item.imageUrl || '/api/placeholder/80/80'}" 
+                 alt="${item.name}" class="item-image"
+                 onerror="this.src='/api/placeholder/80/80'">
+            <div class="item-details">
+                <div class="item-name">${item.name}</div>
+                <div class="item-description">${item.description}</div>
+                <div class="item-price">₹${item.price.toFixed(2)} each</div>
+            </div>
+            <div class="item-quantity">Qty: ${item.quantity}</div>
+        </div>
+    `;
+}
+// Update pricing for a single item checkout
+function updatePricing(item) {
+    const subtotal = item.price * item.quantity;
+    const tax = subtotal * 0.18;
+    const shipping = subtotal > 1000 ? 0 : 50; // Free shipping above ₹1000
+    const total = subtotal + tax + shipping;
+
+    document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+    document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
+    document.getElementById('shipping').textContent = shipping === 0 ? 'FREE' : `₹${shipping.toFixed(2)}`;
+    document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
+}
+
+function proceedToPayment() {
+    alert('Proceeding to payment for selected item...');
+    window.location.href = 'payment.html'; // Redirect to actual payment page
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadOrderSummary();
+});
+</script>
+</body>
+</html>
