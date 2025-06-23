@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Product Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0B0E1A;
+            color: #FFFFFF;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1A1D29;
+            border-radius: 16px;
+            border: 1px solid #2A2D3A;
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2A2D3A 0%, #1A1D29 100%);
+            border-bottom: 1px solid #2A2D3A;
+            padding: 32px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1) 0%, rgba(30, 144, 255, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.025em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #9CA3AF;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2A2D3A 0%, #1E2130 100%);
+            border: 1px solid #2A2D3A;
+            padding: 28px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #8B5CF6, #3B82F6);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            border-color: #3B82F6;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .stat-card p {
+            color: #9CA3AF;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .form-section {
+            background: linear-gradient(135deg, #2A2D3A 0%, #1E2130 100%);
+            border: 1px solid #2A2D3A;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .form-section h2 {
+            color: #FFFFFF;
+            margin-bottom: 24px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #D1D5DB;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #111827;
+            color: #FFFFFF;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #6B7280;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            height: fit-content;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            padding: 8px 14px;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+        }
+
+        .table-section {
+            background: linear-gradient(135deg, #2A2D3A 0%, #1E2130 100%);
+            border: 1px solid #2A2D3A;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+            border-bottom: 1px solid #2A2D3A;
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 25px;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            padding: 4px 8px;
+            font-size: 0.9rem;
+            width: 220px;
+        }
+
+        .search-box input::placeholder {
+            color: #6B7280;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .search-box span {
+            color: #6B7280;
+            margin-left: 8px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid #2A2D3A;
+        }
+
+        th {
+            background: #1F2937;
+            font-weight: 600;
+            color: #D1D5DB;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(139, 92, 246, 0.05);
+            transform: translateX(2px);
+        }
+
+        .product-id {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            background: #374151;
+            color: #9CA3AF;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .price {
+            font-weight: 700;
+            color: #10B981;
+            font-size: 1.1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 48px;
+            color: #6B7280;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #374151;
+            border-top: 2px solid #8B5CF6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 64px 24px;
+            color: #6B7280;
+        }
+
+        .no-products h3 {
+            margin-bottom: 8px;
+            color: #D1D5DB;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .main-content {
+                padding: 24px;
+            }
+            
+            .form-section {
+                padding: 24px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+                padding: 20px 24px;
+            }
+            
+            .search-box {
+                justify-content: center;
+            }
+            
+            .search-box input {
+                width: 180px;
+            }
+            
+            th, td {
+                padding: 12px 16px;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Scrollbar styling for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1F2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4B5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Admin Portal</h1>
+            <p>Professional Product Management System</p>
+        </div>
+
+        <div class="main-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalProducts">0</h3>
+                    <p>Total Products</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalValue">$0</h3>
+                    <p>Total Value</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="avgPrice">$0</h3>
+                    <p>Average Price</p>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>➕ Add New Product</h2>
+                <form id="productForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Product Name</label>
+                            <input type="text" id="name" placeholder="Enter product name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price ($)</label>
+                            <input type="number" id="price" placeholder="0.00" step="0.01" min="0" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <h2>📦 Product Inventory</h2>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search products...">
+                        <span>🔍</span>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                            <tr class="loading">
+                                <td colspan="4">Loading products...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+       <div class="notification" id="notification"></div>
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+        let allProducts = [];
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = type === 'success' 
+                ? 'linear-gradient(135deg, #27ae60, #2ecc71)'
+                : 'linear-gradient(135deg, #e74c3c, #c0392b)';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalProducts = allProducts.length;
+            const totalValue = allProducts.reduce((sum, product) => sum + parseFloat(product.Price || 0), 0);
+            const avgPrice = totalProducts > 0 ? totalValue / totalProducts : 0;
+
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('totalValue').textContent = `$${totalValue.toFixed(2)}`;
+            document.getElementById('avgPrice').textContent = `$${avgPrice.toFixed(2)}`;
+        }
+
+        // 🟢 Fetch products
+        function loadProducts() {
+            fetch(`${API_BASE}/products`)
+                .then(response => response.json())
+                .then(data => {
+                    const productTableBody = document.getElementById("productTableBody");
+                    
+                    if (Array.isArray(data)) {
+                        allProducts = data;
+                        displayProducts(data);
+                        updateStats();
+                    } else {
+                        console.error("Expected an array but got:", data);
+                        productTableBody.innerHTML = `
+                            <tr class="no-products">
+                                <td colspan="4">
+                                    <h3>⚠️ Error loading products</h3>
+                                    <p>Unable to fetch product data</p>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error loading products:", error);
+                    document.getElementById("productTableBody").innerHTML = `
+                        <tr class="no-products">
+                            <td colspan="4">
+                                <h3>🔌 Connection Error</h3>
+                                <p>Please check if the API server is running</p>
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+
+        // Display products in table
+        function displayProducts(products) {
+            const productTableBody = document.getElementById("productTableBody");
+            productTableBody.innerHTML = "";
+
+            if (products.length === 0) {
+                productTableBody.innerHTML = `
+                    <tr class="no-products">
+                        <td colspan="4">
+                            <h3>📦 No products found</h3>
+                            <p>Add your first product using the form above</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            products.forEach((product, index) => {
+                const row = document.createElement("tr");
+                row.style.animationDelay = `${index * 0.1}s`;
+                row.innerHTML = `
+                    <td><span class="product-id">${product.ProductID}</span></td>
+                    <td>${product.ProductName}</td>
+                    <td><span class="price">$${parseFloat(product.Price || 0).toFixed(2)}</span></td>
+                    <td>
+                          <button class="btn btn-warning" onclick="handleUpdate('${product.ProductID}', '${product.ProductName}', ${product.Price})">
+            ✏️ Edit
+        </button>
+                        <button class="btn btn-danger" onclick="deleteProduct('${product.ProductID}')">
+                            🗑️ Delete
+                        </button>
+                    </td>
+                `;
+                productTableBody.appendChild(row);
+            });
+        }
+
+    document.getElementById("productForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const price = parseFloat(document.getElementById("price").value);
+    const id = Date.now().toString();
+
+    if (!name || isNaN(price)) {
+        showNotification("❌ Please provide a valid product name and price", "error");
+        return;
+    }
+
+    const productData = {
+        ProductID: id,
+        ProductName: name,
+        Price: price
+    };
+
+    try {    // 🟢 Add new product
+    
+        const response = await fetch(`${API_BASE}/products`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(productData)
+        });
+
+        if (response.ok) {
+            showNotification(`✅ Product "${name}" added successfully!`);
+            document.getElementById("productForm").reset();
+            loadProducts(); // refresh the list
+        } else {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Failed to add product");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        showNotification("❌ Failed to add product", "error");
+    }
+});
+
+
+        // 🔴 Delete product
+        async function deleteProduct(id) {
+            const product = allProducts.find(p => p.ProductID === id);
+            const productName = product ? product.ProductName : 'this product';
+            
+            if (!confirm(`Are you sure you want to delete "${productName}"?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/products/${id}`, { 
+                    method: "DELETE" 
+                });
+
+                if (response.ok) {
+                    showNotification(`🗑️ Product "${productName}" deleted successfully!`);
+                    loadProducts();
+                } else {
+                    throw new Error('Failed to delete product');
+                }
+            } catch (error) {
+                console.error("Error deleting product:", error);
+                showNotification("❌ Failed to delete product", "error");
+            }
+        }
+
+        // 🔍 Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredProducts = allProducts.filter(product => 
+                product.ProductName.toLowerCase().includes(searchTerm) ||
+                product.ProductID.toLowerCase().includes(searchTerm)
+            );
+            displayProducts(filteredProducts);
+        });
+
+        // 🟡 Update product (optional - keeping for reference)
+        async function updateProduct(id, name, price) {
+    if (!name || isNaN(price)) {
+        showNotification("❌ Please enter a valid name and price", "error");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/products/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                ProductName: name,
+                Price: parseFloat(price)
+            })
+        });
+
+        if (response.ok) {
+            showNotification("✏️ Product updated successfully!");
+            loadProducts();
+        } else {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Failed to update product");
+        }
+    } catch (error) {
+        console.error("Error updating product:", error);
+        showNotification("❌ Failed to update product", "error");
+    }
+}
+function handleUpdate(id, currentName, currentPrice) {
+        const newName = prompt("Enter new product name:", currentName);
+        if (newName === null) return;
+
+        const newPrice = prompt("Enter new price:", currentPrice);
+        if (newPrice === null) return;
+
+        if (!newName.trim() || isNaN(parseFloat(newPrice))) {
+            showNotification("❌ Invalid input for update", "error");
+            return;
+        }
+
+        updateProduct(id, newName.trim(), parseFloat(newPrice));
+    }
+
+        loadProducts();
+      
+  
+    </script>
+</body>
+</html>
+</body>
+</html>
