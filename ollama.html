@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ollama Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #responseBox {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background-color: #f4f4f4;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h2>Chat with Ollama (FastAPI)</h2>
+
+  <textarea id="promptInput" placeholder="Enter your prompt..."></textarea><br>
+  <button onclick="sendPrompt()">Send</button>
+
+  <div id="responseBox"></div>
+
+  <script>
+    async function sendPrompt() {
+      const prompt = document.getElementById("promptInput").value;
+      const responseBox = document.getElementById("responseBox");
+      responseBox.textContent = "⏳ Waiting for response...";
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ prompt: prompt })
+        });
+
+        const data = await res.json();
+        responseBox.textContent = data.response || data.error || "No response.";
+      } catch (err) {
+        responseBox.textContent = "⚠️ Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
